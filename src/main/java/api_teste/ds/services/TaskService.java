@@ -52,7 +52,7 @@ public  class TaskService {
         this.userService.findById(UserId);
 
         //Executa a busca customizada no repositótio filtrando pelo id do usuario
-        List<Task> tasks = this.taskRepository.findByUserId(UserId);
+        List<Task> tasks = this.taskRepository.findByUser_Id(UserId);
 
         //Retorna a lista de tarefas
         return tasks;
