@@ -65,7 +65,7 @@ public  class TaskService {
             User user = this.userService.findById(obj.getUser().getId());
 
             // Define o ID como null para garantir que o JPA realize um inserção(INSERT) e não uma atualização
-            obj.setId(id:null);
+            obj.setId(null);
 
             //Associa a entidade User completa e validadada a tarefa
             obj.setUser(user);
@@ -77,21 +77,32 @@ public  class TaskService {
             return obj;
         }
 
-        //Garante que a 
+        //Garante que a atualização ocorra dentro de transação isolada no banco
         @Transactional 
         public Task update(Task obj){
+            //Reaproveita o findByID para verificar se atarefa a ser atualizada existe realmente
+            Task newObj = findById(obj.getId());
 
+            //Atualiza apenas o campo descricao do objeto persistido com o novo valo
+            newObj.setDescription(obj.getDescription());
+
+            //Salva a alteração no banco de dados e retorna o objeto atualizado
+            return  this.taskRepository.save(newObj);
         }
 
+        //Método para deletar uma tarefa pelo Id
+        public void delete(Long Id){
+            //Verifica se a tarefa existe antes de tentar deletar
+            findById(Id);
 
-
-
-
-
-
-
-
-
+            try{
+                //Solicita a remoção da tarefa no banco de dados pelo ID 
+                this.taskRepository.deleteById(Id);
+            } catch (Exception e){
+                //Capctura execções (como violações de chave estrangeira e lança uma mensagem amigável)
+                throw new RuntimeException("Não é posspivel excuir pois não há tarefas relacionadas");
+            }
+        }
     }
 
 
@@ -99,7 +110,7 @@ public  class TaskService {
 
 
    
-}
+
 
 
 
