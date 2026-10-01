@@ -55,7 +55,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
                         WebRequest request){
                             return buildErrorResponse(
                                 dataIntegrityViolationException,
-                                message:"Violação de Integridade dos dados no banco.",
+                                "Violação de Integridade dos dados no banco.",
                                 HttpStatus.CONFLICT,
                                 request
                             );
@@ -81,7 +81,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
                         WebRequest request){
                             return buildErrorResponse(
                                 exception, 
-                                message:"Ocorreu um erro no servidor.", 
+                                "Ocorreu um erro no servidor.", 
                                 HttpStatus.INTERNAL_SERVER_ERROR,
                                 request);
                         }
@@ -93,7 +93,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
                 WebRequest request){
                     ErrorResponse errorResponse = new ErrorResponse(httpStatus.value(), message);
                     if(printStackTrace){
-                        errorResponse.setStackTrace(ExceptionUtils.getStrackTrace(exception));
+                        errorResponse.setStackTrace(ExceptionUtils.getStackTrace(exception));
                     }
                     return ResponseEntity.status(httpStatus).body(errorResponse);
                     }
